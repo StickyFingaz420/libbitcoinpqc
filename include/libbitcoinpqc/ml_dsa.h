@@ -81,4 +81,15 @@ int ml_dsa_44_verify(
  */
 void ml_dsa_derandomize(uint8_t *seed, const uint8_t *m, size_t mlen, const uint8_t *sk);
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void ml_dsa_init_random_source(const uint8_t *random_data, size_t random_data_size);
+void ml_dsa_restore_original_random(void);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* BITCOIN_PQC_ML_DSA_H */
