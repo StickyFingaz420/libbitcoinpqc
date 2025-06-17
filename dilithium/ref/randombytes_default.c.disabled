@@ -1,0 +1,1 @@
+#error "randombytes_default.c should never be compiled or linked!"
