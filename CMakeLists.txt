@@ -35,7 +35,7 @@ include_directories(
 
 # Custom randombytes implementation
 set(CUSTOM_RANDOMBYTES
-    dilithium/ref/randombytes_custom.c
+    dilithium/ref/randombytes.c
     sphincsplus/ref/randombytes_custom.c
 )
 

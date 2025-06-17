@@ -39,6 +39,10 @@ void ml_dsa_restore_original_random() {
 
 /* This function is called from our custom randombytes implementation */
 void custom_randombytes_impl(uint8_t *out, size_t outlen) {
+    /* Debug: print offset and outlen */
+    fprintf(stderr, "[custom_randombytes_impl] offset=%zu, outlen=%zu\n", g_random_data_offset, outlen);
+    fflush(stderr);
+
     /* If out is NULL or outlen is 0, nothing to do */
     if (!out || outlen == 0) {
         return;
