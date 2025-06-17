@@ -70,27 +70,14 @@ void custom_randombytes_impl(uint8_t *out, size_t outlen) {
     }
 
     /* Otherwise use our provided random data */
-    size_t total_copied = 0;
-
-    /* Copy data until we've filled the output buffer */
-    while (total_copied < outlen) {
-        /* Calculate amount to copy */
-        size_t amount = outlen - total_copied;
-        if (amount > g_random_data_size - g_random_data_offset) {
-            amount = g_random_data_size - g_random_data_offset;
-        }
-
-        /* Copy the data */
-        memcpy(out + total_copied, g_random_data + g_random_data_offset, amount);
-
-        /* Update positions */
-        total_copied += amount;
-        g_random_data_offset += amount;
-
-        /* Wrap around if needed */
-        if (g_random_data_offset >= g_random_data_size) {
-            g_random_data_offset = 0;
-        }
+    if (outlen > g_random_data_size) {
+        /* Not enough entropy: fill what we can, zero the rest */
+        memcpy(out, g_random_data, g_random_data_size);
+        memset(out + g_random_data_size, 0, outlen - g_random_data_size);
+        g_random_data_offset = g_random_data_size; // Mark as fully consumed
+    } else {
+        memcpy(out, g_random_data, outlen);
+        g_random_data_offset = outlen;
     }
 }
 
