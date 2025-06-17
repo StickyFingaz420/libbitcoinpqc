@@ -11,6 +11,7 @@
 #include "../../dilithium/ref/randombytes.h"
 #include "../../dilithium/ref/params.h"
 #include "../../dilithium/ref/sign.h"
+#include "../../dilithium/ref/fips202.h"
 
 /*
  * External declaration for the random data utilities
@@ -30,14 +31,18 @@ int ml_dsa_44_keygen(
         return -1;
     }
 
-    /* Set up custom random bytes function with user-provided entropy */
-    ml_dsa_init_random_source(random_data, random_data_size);
+    // Hash the full 128-byte seed to 32 bytes using SHAKE256
+    uint8_t hashed_seed[32];
+    shake256(hashed_seed, 32, random_data, random_data_size);
+
+    // Set up custom random bytes function with hashed seed
+    ml_dsa_init_random_source(hashed_seed, 32);
     ml_dsa_setup_custom_random();
 
-    /* Call the reference implementation's key generation function */
+    // Call the reference implementation's key generation function
     int result = crypto_sign_keypair(pk, sk);
 
-    /* Restore original random bytes function */
+    // Restore original random bytes function
     ml_dsa_restore_original_random();
 
     return result;

@@ -1,8 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+//#define DILITHIUM_RANDOMIZED_SIGNING // Disabled for deterministic keygen
 //#define DILITHIUM_MODE 2
-#define DILITHIUM_RANDOMIZED_SIGNING
 //#define USE_RDPMC
 //#define DBENCH
 
